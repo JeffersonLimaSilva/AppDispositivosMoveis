@@ -1,102 +1,188 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fillViewport="true"
     tools:context=".MainActivity">
 
-    <EditText
-        android:id="@+id/editTextName"
-        android:layout_width="0dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="46dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="46dp"
-        android:ems="10"
-        android:hint="@string/name_hint"
-        android:inputType="textCapWords"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewName" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/register"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/register"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.145"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.106" />
+        <TextView
+            android:id="@+id/mood_log"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/mood_log"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.145"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.106" />
 
-    <TextView
-        android:id="@+id/textViewName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="48dp"
-        android:labelFor="@id/editTextName"
-        android:text="@string/name"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/register" />
+        <EditText
+            android:id="@+id/editTextDescription"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="30dp"
+            android:ems="10"
+            android:hint="@string/description_hint"
+            android:inputType="textCapWords"
+            android:labelFor="@id/textViewDescription"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/textViewDescription"
+            app:layout_constraintTop_toBottomOf="@+id/textViewDescription" />
 
-    <EditText
-        android:id="@+id/editTextAge"
-        android:layout_width="0dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="46dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="46dp"
-        android:ems="10"
-        android:hint="@string/age_hint"
-        android:inputType="number"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewAge" />
+        <TextView
+            android:id="@+id/textViewDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="48dp"
+            android:labelFor="@id/editTextDescription"
+            android:text="@string/description_tittle"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/mood_log" />
 
-    <TextView
-        android:id="@+id/textViewAge"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="46dp"
-        android:layout_marginTop="16dp"
-        android:labelFor="@id/editTextAge"
-        android:text="@string/age"
-        android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextName" />
+        <TextView
+            android:id="@+id/textViewEmotionsFelt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="27dp"
+            android:text="@string/emotions_felt"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editTextDescription" />
 
-    <Button
-        android:id="@+id/buttonConfirm"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="228dp"
-        android:layout_marginTop="48dp"
-        android:layout_marginEnd="70dp"
-        android:onClick="saveValues"
-        android:text="Confirmar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextAge" />
+        <CheckBox
+            android:id="@+id/checkBoxAnxiety"
+            android:layout_width="102dp"
+            android:layout_height="34dp"
+            android:text="@string/anxiety"
+            app:layout_constraintStart_toStartOf="@+id/textViewEmotionsFelt"
+            app:layout_constraintTop_toBottomOf="@+id/checkBoxSadness" />
 
-    <Button
-        android:id="@+id/buttonClear"
-        android:layout_width="111dp"
-        android:layout_height="49dp"
-        android:layout_marginStart="70dp"
-        android:layout_marginTop="48dp"
-        android:onClick="clearInput"
-        android:text="Limpar"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextAge" />
+        <CheckBox
+            android:id="@+id/checkBoxSadness"
+            android:layout_width="wrap_content"
+            android:layout_height="34dp"
+            android:layout_marginTop="19dp"
+            android:text="@string/sadness"
+            app:layout_constraintStart_toStartOf="@+id/textViewEmotionsFelt"
+            app:layout_constraintTop_toBottomOf="@+id/textViewEmotionsFelt" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <CheckBox
+            android:id="@+id/checkBoxHappiness"
+            android:layout_width="wrap_content"
+            android:layout_height="34dp"
+            android:text="@string/happiness"
+            app:layout_constraintStart_toStartOf="@+id/textViewEmotionsFelt"
+            app:layout_constraintTop_toBottomOf="@+id/checkBoxAnxiety" />
+
+        <CheckBox
+            android:id="@+id/checkBoxAnger"
+            android:layout_width="wrap_content"
+            android:layout_height="34dp"
+            android:text="@string/anger"
+            app:layout_constraintStart_toStartOf="@+id/textViewEmotionsFelt"
+            app:layout_constraintTop_toBottomOf="@+id/checkBoxHappiness" />
+
+        <TextView
+            android:id="@+id/textViewIntensityEmotion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="27dp"
+            android:labelFor="@id/radioGroupIntensityEmotion"
+            android:text="@string/intensity_of_emotion"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/checkBoxAnger" />
+
+        <RadioGroup
+            android:id="@+id/radioGroupIntensityEmotion"
+            android:layout_width="221dp"
+            android:layout_height="131dp"
+            android:layout_marginTop="19dp"
+            app:layout_constraintStart_toStartOf="@+id/textViewIntensityEmotion"
+            app:layout_constraintTop_toBottomOf="@+id/textViewIntensityEmotion">
+
+            <RadioButton
+                android:id="@+id/radioButtonLight"
+                android:layout_width="134dp"
+                android:layout_height="38dp"
+                android:text="@string/light" />
+
+            <RadioButton
+                android:id="@+id/radioButtonModerate"
+                android:layout_width="134dp"
+                android:layout_height="38dp"
+                android:text="@string/moderate" />
+
+            <RadioButton
+                android:id="@+id/radioButtonIntense"
+                android:layout_width="134dp"
+                android:layout_height="38dp"
+                android:text="@string/intense" />
+        </RadioGroup>
+
+        <Button
+            android:id="@+id/buttonConfirm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="60dp"
+            android:layout_marginEnd="50dp"
+            android:onClick="saveValues"
+            android:text="@string/confirm_button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/spinnerCategoryDay" />
+
+        <Button
+            android:id="@+id/buttonClear"
+            android:layout_width="111dp"
+            android:layout_height="49dp"
+            android:layout_marginStart="50dp"
+            android:layout_marginTop="60dp"
+            android:onClick="clearInput"
+            android:text="@string/clear_button"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/spinnerCategoryDay" />
+
+        <Spinner
+            android:id="@+id/spinnerCategoryDay"
+            android:layout_width="315dp"
+            android:layout_height="24dp"
+            android:layout_marginTop="19dp"
+            android:layout_marginEnd="30dp"
+            android:entries="@array/categories"
+            android:spinnerMode="dialog"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/textViewCategoryDay"
+            app:layout_constraintTop_toBottomOf="@+id/textViewCategoryDay" />
+
+        <TextView
+            android:id="@+id/textViewCategoryDay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:labelFor="@id/spinnerCategoryDay"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="27dp"
+            android:text="@string/category_day"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/radioGroupIntensityEmotion" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
+

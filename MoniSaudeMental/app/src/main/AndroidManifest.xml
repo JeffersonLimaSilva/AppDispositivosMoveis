@@ -13,6 +13,10 @@
         android:theme="@style/Theme.MoniSaudeMental"
         tools:targetApi="31">
         <activity
+            android:name=".PersonActivity"
+            android:exported="false"
+            android:theme="@style/Theme.MoniSaudeMental" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
