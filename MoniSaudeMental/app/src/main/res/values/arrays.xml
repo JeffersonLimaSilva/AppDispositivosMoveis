@@ -7,4 +7,57 @@
         <item>@string/health</item>
         <item>@string/leisure</item>
     </string-array>
+
+    <string-array name="mood_descriptions">
+        <item>Feliz</item>
+        <item>Triste</item>
+        <item>Ansioso</item>
+        <item>Calmo</item>
+        <item>Irritado</item>
+        <item>Animado</item>
+        <item>Cansado</item>
+        <item>Preocupado</item>
+        <item>Motivado</item>
+        <item>Desanimado</item>
+    </string-array>
+
+    <string-array name="emotions">
+        <item>Alegria</item>
+        <item>Tristeza</item>
+        <item>Ansiedade</item>
+        <item>Raiva</item>
+        <item>Tristeza, Ansiedade</item>
+        <item>Tristeza, Raiva</item>
+        <item>Ansiedade, Raiva</item>
+        <item>Alegria, Ansiedade</item>
+        <item>Tristeza, Ansiedade, Raiva</item>
+        <item>Alegria, Tristeza, Ansiedade, Raiva</item>
+    </string-array>
+
+    <integer-array name="intensity_emotions">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>1</item>
+        <item>0</item>
+        <item>2</item>
+        <item>1</item>
+        <item>0</item>
+        <item>2</item>
+        <item>1</item>
+    </integer-array>
+
+    <integer-array name="categories_days">
+        <item>0</item>
+        <item>1</item>
+        <item>3</item>
+        <item>2</item>
+        <item>0</item>
+        <item>3</item>
+        <item>1</item>
+        <item>4</item>
+        <item>2</item>
+        <item>4</item>
+    </integer-array>
+
 </resources>

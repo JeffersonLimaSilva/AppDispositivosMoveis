@@ -2,7 +2,6 @@ package br.edu.utfpr.alunos.jeffersonlima.monisaudemental;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioGroup;
@@ -11,9 +10,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.util.ArrayList;
-
-public class MainActivity extends AppCompatActivity {
+public class MoodLogActivity extends AppCompatActivity {
 
     private EditText editTextDescription;
     private CheckBox checkBoxSadness, checkBoxAnxiety, checkBoxHappiness, checkBoxAnger;
@@ -22,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_mood_log);
 
         editTextDescription        = findViewById(R.id.editTextDescription);
         checkBoxSadness            = findViewById(R.id.checkBoxSadness);
