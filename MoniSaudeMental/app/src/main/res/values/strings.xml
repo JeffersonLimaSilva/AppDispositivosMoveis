@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MoniSaudeMental</string>
+    <string name="app_name">Monitoramento de Saúde Mental</string>
     <string name="register">Cadastro Usuário</string>
     <string name="name">Nome</string>
     <string name="age">Idade</string>
