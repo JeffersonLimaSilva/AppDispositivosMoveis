@@ -20,6 +20,7 @@ public class MoodLogActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mood_log);
+        setTitle("Cadastro de Humor Geral");
 
         editTextDescription        = findViewById(R.id.editTextDescription);
         checkBoxSadness            = findViewById(R.id.checkBoxSadness);

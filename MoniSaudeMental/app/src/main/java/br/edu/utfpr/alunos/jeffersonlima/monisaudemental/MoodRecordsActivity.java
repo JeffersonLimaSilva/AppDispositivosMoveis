@@ -1,5 +1,6 @@
 package br.edu.utfpr.alunos.jeffersonlima.monisaudemental;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -20,6 +21,7 @@ public class MoodRecordsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mood_records);
+        setTitle("Controle Geral");
         listViewMoodRecords = findViewById(R.id.listViewMoodRecords);
         listViewMoodRecords.setOnItemClickListener(new AdapterView.OnItemClickListener(){
 
@@ -36,6 +38,8 @@ public class MoodRecordsActivity extends AppCompatActivity {
         });
         addMoodLog();
     }
+
+
     public void addMoodLog(){
         String[] moods_descriptions = getResources().getStringArray(R.array.mood_descriptions);
         String[] moods_emotions     = getResources().getStringArray(R.array.emotions);
@@ -57,5 +61,15 @@ public class MoodRecordsActivity extends AppCompatActivity {
         }
         moodsAdapter = new MoodsAdapter(this, listMoods);
         listViewMoodRecords.setAdapter(moodsAdapter);
+    }
+
+    public void openAbout ( View view){
+        Intent intentOpening = new Intent(this, AboutActivity.class);
+
+        startActivity(intentOpening);
+    }
+    public void openMoodLog (View view){
+        Intent intentOpening = new Intent(this, MoodLogActivity.class);
+        startActivity(intentOpening);
     }
 }
