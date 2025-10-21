@@ -84,4 +84,11 @@
     <string name="leisure">Lazer</string>
     <string name="category_day_show">"Categoria: "</string>
     <string name="description_mood">"Descrição do Humor: "</string>
+    <string name="textViewIntesity">Intensidade</string>
+    <string name="textViewEmotion">Emoção</string>
+    <string name="textViewCategoy">Categoria</string>
+    <string name="decription_logo">Logo da Utfpr</string>
+    <string name="authorship">Informações de autoria:\n\nNome: Jefferson Lima Silva\nCurso: Engenharia de Software\nE-mail: jeffersonlima@alunos,.utfpr.edu.br</string>
+    <string name="description_app">O aplicativo ajuda o usuário a acompanhar sua saúde mental por meio de registros diários de humor, crises emocionais, gatilhos e hábitos de autocuidado. Ele auxilia no autoconhecimento, organização emocional e prevenção de crises, sendo um apoio complementar ao cuidado psicológico.</string>
+    <string name="about">Sobre</string>
 </resources>
