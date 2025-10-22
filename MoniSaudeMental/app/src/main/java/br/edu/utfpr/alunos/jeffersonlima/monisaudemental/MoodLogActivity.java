@@ -14,6 +14,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class MoodLogActivity extends AppCompatActivity {
 
+    public static final String KEY_DESCRIPTION = "KEY_DESCRIPTION";
+    public static final String KEY_SADNESS = "KEY_SADNESS";
+    public static final String KEY_ANXIETY = "KEY_ANXIETY";
+    public static final String KEY_HAPPINESS = "KEY_HAPPINESS";
+    public static final String KEY_ANGER = "KEY_ANGER";
+    public static final String KEY_INTENSITY = "KEY_INTENSITY";
+    public static final String KEY_CATEGORY = "KEY_CATEGORY";
     private EditText editTextDescription;
     private CheckBox checkBoxSadness, checkBoxAnxiety, checkBoxHappiness, checkBoxAnger;
     private RadioGroup radioGroupIntensityEmotion;
@@ -89,13 +96,13 @@ public class MoodLogActivity extends AppCompatActivity {
         }
 
         Intent intentResponse = new Intent();
-        intentResponse.putExtra("KEY_DESCRIPTION", description);
-        intentResponse.putExtra("KEY_SADNESS", sadness);
-        intentResponse.putExtra("KEY_ANXIETY", anxiety);
-        intentResponse.putExtra("KEY_HAPPINESS", happiness);
-        intentResponse.putExtra("KEY_ANGER", anger);
-        intentResponse.putExtra("KEY_INTENSITY", intensityEmotion.toString());
-        intentResponse.putExtra("KEY_CATEGORY", categoryDay);
+        intentResponse.putExtra(KEY_DESCRIPTION, description);
+        intentResponse.putExtra(KEY_SADNESS, sadness);
+        intentResponse.putExtra(KEY_ANXIETY, anxiety);
+        intentResponse.putExtra(KEY_HAPPINESS, happiness);
+        intentResponse.putExtra(KEY_ANGER, anger);
+        intentResponse.putExtra(KEY_INTENSITY, intensityEmotion.toString());
+        intentResponse.putExtra(KEY_CATEGORY, categoryDay);
         setResult(MoodLogActivity.RESULT_OK, intentResponse);
         finish();
     }
