@@ -1,7 +1,9 @@
 package br.edu.utfpr.alunos.jeffersonlima.monisaudemental;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioGroup;
@@ -63,15 +65,15 @@ public class MoodLogActivity extends AppCompatActivity {
         }
 
         int radioButtonId = radioGroupIntensityEmotion.getCheckedRadioButtonId();
-        String intensityEmotion;
+        IntensityEmotion intensityEmotion;
         if(radioButtonId == R.id.radioButtonLight){
-            intensityEmotion = getString(R.string.light);
+            intensityEmotion = IntensityEmotion.Leve;
         }else{
             if(radioButtonId == R.id.radioButtonModerate){
-                intensityEmotion = getString(R.string.moderate);
+                intensityEmotion = IntensityEmotion.Moderada;
             }else{
                 if(radioButtonId == R.id.radioButtonIntense){
-                    intensityEmotion = getString(R.string.intense);
+                    intensityEmotion = IntensityEmotion.Intensa;
                 }else{
                     Toast.makeText(this, R.string.select_intent, Toast.LENGTH_SHORT).show();
                     return;
@@ -79,17 +81,22 @@ public class MoodLogActivity extends AppCompatActivity {
             }
         }
 
-        String categoryDay = (String) spinnerCategoryDay.getSelectedItem();
+        int categoryDay = spinnerCategoryDay.getSelectedItemPosition();
+        if(categoryDay == AdapterView.INVALID_POSITION){
+            Toast.makeText(this,
+                    "O spinner Categoria não possui valores!",
+                    Toast.LENGTH_LONG).show();
+        }
 
-        Toast.makeText(this,
-                getString(R.string.description_show) + description + "\n" +
-                        getString(R.string.sadness_show) + (sadness ? "x": "") + "\n" +
-                        getString(R.string.anxiety_show) + (anxiety ? "x": "") + "\n" +
-                        getString(R.string.happiness_show) + (happiness ? "x": "") + "\n" +
-                        getString(R.string.anger_show) + (anger ? "x": "") + "\n" +
-                        getString(R.string.intensity_emotion_show) + intensityEmotion + "\n" +
-                        getString(R.string.category_day_show) + categoryDay,
-
-                Toast.LENGTH_LONG).show();
+        Intent intentResponse = new Intent();
+        intentResponse.putExtra("KEY_DESCRIPTION", description);
+        intentResponse.putExtra("KEY_SADNESS", sadness);
+        intentResponse.putExtra("KEY_ANXIETY", anxiety);
+        intentResponse.putExtra("KEY_HAPPINESS", happiness);
+        intentResponse.putExtra("KEY_ANGER", anger);
+        intentResponse.putExtra("KEY_INTENSITY", intensityEmotion.toString());
+        intentResponse.putExtra("KEY_CATEGORY", categoryDay);
+        setResult(MoodLogActivity.RESULT_OK, intentResponse);
+        finish();
     }
 }

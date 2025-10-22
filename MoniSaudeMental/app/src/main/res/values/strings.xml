@@ -75,7 +75,7 @@
     <string name="intense">Intensa</string>
     <string name="select_intent">Selecione uma Intencidade.</string>
     <string name="intensity_emotion_show">"Intencidade: "</string>
-    <string name="select_emotion">Selecione oa menos uma Emoção.</string>
+    <string name="select_emotion">Selecione ao menos uma Emoção.</string>
     <string name="category_day">Categoria do Dia</string>
     <string name="work">Trabalho</string>
     <string name="studies">Estudos</string>
@@ -91,4 +91,5 @@
     <string name="authorship">Informações de autoria:\n\nNome: Jefferson Lima Silva\nCurso: Engenharia de Software\nE-mail: jeffersonlima@alunos,.utfpr.edu.br</string>
     <string name="description_app">O aplicativo ajuda o usuário a acompanhar sua saúde mental por meio de registros diários de humor, crises emocionais, gatilhos e hábitos de autocuidado. Ele auxilia no autoconhecimento, organização emocional e prevenção de crises, sendo um apoio complementar ao cuidado psicológico.</string>
     <string name="about">Sobre</string>
+    <string name="register_buttom">Cadastrar</string>
 </resources>

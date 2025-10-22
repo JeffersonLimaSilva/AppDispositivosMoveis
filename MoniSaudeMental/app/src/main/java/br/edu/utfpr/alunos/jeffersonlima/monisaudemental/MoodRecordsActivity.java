@@ -7,6 +7,10 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
@@ -68,6 +72,19 @@ public class MoodRecordsActivity extends AppCompatActivity {
 
         startActivity(intentOpening);
     }
+    ActivityResultLauncher<Intent> launcherRegisterMood = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == MoodRecordsActivity.RESULT_OK){
+                        Intent intent = result.getData();
+                        Bundle bundle = intent.getExtras();
+                        if(bundle != null){
+                            String description = bundle.getString("KEY_DESCRIPTION");
+                        }
+                    }
+                }
+            });
     public void openMoodLog (View view){
         Intent intentOpening = new Intent(this, MoodLogActivity.class);
         startActivity(intentOpening);
