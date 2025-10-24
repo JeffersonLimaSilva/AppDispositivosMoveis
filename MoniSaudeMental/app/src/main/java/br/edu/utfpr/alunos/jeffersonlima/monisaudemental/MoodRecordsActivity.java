@@ -2,6 +2,8 @@ package br.edu.utfpr.alunos.jeffersonlima.monisaudemental;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -11,6 +13,7 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
@@ -67,7 +70,7 @@ public class MoodRecordsActivity extends AppCompatActivity {
         listViewMoodRecords.setAdapter(moodsAdapter);
     }
 
-    public void openAbout ( View view){
+    public void openAbout (){
         Intent intentOpening = new Intent(this, AboutActivity.class);
 
         startActivity(intentOpening);
@@ -101,8 +104,32 @@ public class MoodRecordsActivity extends AppCompatActivity {
                     }
                 }
             });
-    public void openMoodLog (View view){
+    public void openMoodLog (){
         Intent intentOpening = new Intent(this, MoodLogActivity.class);
         launcherRegisterMood.launch(intentOpening);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.mood_recordes_options, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        int idMenuItem = item.getItemId();
+
+        if(idMenuItem == R.id.menu_item_add){
+            openMoodLog();
+            return true;
+        }else {
+            if (idMenuItem == R.id.menu_item_about) {
+                openAbout();
+                return true;
+            } else {
+                return super.onOptionsItemSelected(item);
+            }
+        }
     }
 }
