@@ -2,6 +2,7 @@ package br.edu.utfpr.alunos.jeffersonlima.monisaudemental;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,6 +25,8 @@ public class MoodRecordsActivity extends AppCompatActivity {
     private ListView listViewMoodRecords;
     private List<MoodLog> listMoods;
     private MoodsAdapter moodsAdapter;
+
+    private int positionSelected = -1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +47,8 @@ public class MoodRecordsActivity extends AppCompatActivity {
             }
         });
         addMoodLog();
+
+        registerForContextMenu(listViewMoodRecords);
     }
 
 
@@ -72,7 +77,7 @@ public class MoodRecordsActivity extends AppCompatActivity {
 
     public void openAbout (){
         Intent intentOpening = new Intent(this, AboutActivity.class);
-
+        intentOpening.putExtra(MoodLogActivity.KEY_MODO, MoodLogActivity.NEW_MODO);
         startActivity(intentOpening);
     }
     ActivityResultLauncher<Intent> launcherRegisterMood = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
@@ -97,14 +102,14 @@ public class MoodRecordsActivity extends AppCompatActivity {
                             emotion = happiness ? emotion + getString(R.string.happiness): emotion;
                             emotion = anger ? emotion + getString(R.string.anger): emotion;
 
-                            MoodLog moodLog = new MoodLog(description, emotion, IntensityEmotion.valueOf(intensity), categoryDay);
+                            MoodLog moodLog = new MoodLog(description,sadness, anxiety, happiness,anger, emotion, IntensityEmotion.valueOf(intensity), categoryDay);
                             listMoods.add(moodLog);
                             moodsAdapter.notifyDataSetChanged();
                         }
                     }
                 }
             });
-    public void openMoodLog (){
+    public void openMoodLog(){
         Intent intentOpening = new Intent(this, MoodLogActivity.class);
         launcherRegisterMood.launch(intentOpening);
     }
@@ -129,6 +134,97 @@ public class MoodRecordsActivity extends AppCompatActivity {
                 return true;
             } else {
                 return super.onOptionsItemSelected(item);
+            }
+        }
+    }
+    ActivityResultLauncher<Intent> launcherEditMood = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == MoodRecordsActivity.RESULT_OK){
+                        Intent intent = result.getData();
+                        Bundle bundle = intent.getExtras();
+                        if(bundle != null){
+                            String description = bundle.getString(MoodLogActivity.KEY_DESCRIPTION);
+                            boolean sadness    = bundle.getBoolean(MoodLogActivity.KEY_SADNESS);
+                            boolean anxiety    = bundle.getBoolean(MoodLogActivity.KEY_ANXIETY);
+                            boolean happiness  = bundle.getBoolean(MoodLogActivity.KEY_HAPPINESS);
+                            boolean anger      = bundle.getBoolean(MoodLogActivity.KEY_ANGER);
+                            String intensity   = bundle.getString(MoodLogActivity.KEY_INTENSITY);
+                            int categoryDay    = bundle.getInt(MoodLogActivity.KEY_CATEGORY);
+
+                            String emotion = "";
+                            emotion = sadness ? emotion + getString(R.string.sadness ): emotion;
+                            emotion = anxiety ? emotion + getString(R.string.anxiety) : emotion;
+                            emotion = happiness ? emotion + getString(R.string.happiness): emotion;
+                            emotion = anger ? emotion + getString(R.string.anger): emotion;
+
+                            MoodLog moodLog = listMoods.get(positionSelected);
+
+                            moodLog.setDescription(description);
+                            moodLog.setSadness(sadness);
+                            moodLog.setAnxiety(anxiety);
+                            moodLog.setHappiness(happiness);
+                            moodLog.setAnger(anger);
+                            moodLog.setCategoryDay(categoryDay);
+
+                            IntensityEmotion intensityEmotion = IntensityEmotion.valueOf(intensity);
+                            moodLog.setIntensityEmotion(intensityEmotion);
+
+                            moodsAdapter.notifyDataSetChanged();
+                        }
+                    }
+                    positionSelected = -1;
+                }
+            });
+    private void editMoods(int position){
+        positionSelected = position;
+
+        MoodLog moodLog = listMoods.get(positionSelected);
+        Intent intentOpening = new Intent(this, MoodLogActivity.class);
+
+        intentOpening.putExtra(MoodLogActivity.KEY_MODO, MoodLogActivity.EDIT_MODO);
+
+        intentOpening.putExtra(MoodLogActivity.KEY_DESCRIPTION, moodLog.getDescription());
+        intentOpening.putExtra(MoodLogActivity.KEY_SADNESS, moodLog.isSadness());
+        intentOpening.putExtra(MoodLogActivity.KEY_ANXIETY, moodLog.isAnxiety());
+        intentOpening.putExtra(MoodLogActivity.KEY_HAPPINESS, moodLog.isHappiness());
+        intentOpening.putExtra(MoodLogActivity.KEY_ANGER, moodLog.isAnger());
+        intentOpening.putExtra(MoodLogActivity.KEY_INTENSITY, moodLog.getIntensityEmotion().toString());
+        intentOpening.putExtra(MoodLogActivity.KEY_CATEGORY, moodLog.getCategoryDay());
+
+        launcherEditMood.launch(intentOpening);
+    }
+    private void deleteMoods(int position){
+        listMoods.remove(position);
+        moodsAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+
+        getMenuInflater().inflate(R.menu.mood_recordes_selected, menu);
+    }
+
+    @Override
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
+
+        AdapterView.AdapterContextMenuInfo info;
+        info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+
+
+        int idMenuItem = item.getItemId();
+        if(idMenuItem == R.id.menu_item_edit){
+            editMoods(info.position);
+            return true;
+        }else{
+            if(idMenuItem == R.id.menu_item_delete){
+                deleteMoods(info.position);
+                return true;
+            }
+            else{
+                return super.onContextItemSelected(item);
             }
         }
     }

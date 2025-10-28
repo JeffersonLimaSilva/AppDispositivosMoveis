@@ -137,36 +137,16 @@
                 android:text="@string/intense" />
         </RadioGroup>
 
-        <Button
-            android:id="@+id/buttonConfirm"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="60dp"
-            android:layout_marginEnd="50dp"
-            android:onClick="saveValues"
-            android:text="@string/confirm_button"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/spinnerCategoryDay" />
-
-        <Button
-            android:id="@+id/buttonClear"
-            android:layout_width="111dp"
-            android:layout_height="49dp"
-            android:layout_marginStart="50dp"
-            android:layout_marginTop="60dp"
-            android:onClick="clearInput"
-            android:text="@string/clear_button"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/spinnerCategoryDay" />
-
         <Spinner
             android:id="@+id/spinnerCategoryDay"
             android:layout_width="315dp"
             android:layout_height="24dp"
             android:layout_marginTop="19dp"
             android:layout_marginEnd="30dp"
+            android:layout_marginBottom="24dp"
             android:entries="@array/categories"
             android:spinnerMode="dialog"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/textViewCategoryDay"
             app:layout_constraintTop_toBottomOf="@+id/textViewCategoryDay" />
