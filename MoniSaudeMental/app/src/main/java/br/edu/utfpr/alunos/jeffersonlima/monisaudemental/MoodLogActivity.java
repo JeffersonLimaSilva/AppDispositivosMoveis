@@ -36,12 +36,12 @@ public class MoodLogActivity extends AppCompatActivity {
     private Spinner spinnerCategoryDay;
 
     private int modo;
+    private MoodLog moodOriginl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mood_log);
-        setTitle("Cadastro de Humor Geral");
 
         editTextDescription        = findViewById(R.id.editTextDescription);
         checkBoxSadness            = findViewById(R.id.checkBoxSadness);
@@ -74,6 +74,7 @@ public class MoodLogActivity extends AppCompatActivity {
 
                 IntensityEmotion intensityEmotion = IntensityEmotion.valueOf(intensity);
 
+                moodOriginl = new MoodLog(description, sadness, anxiety, happiness, anger, "",intensityEmotion, categoryDay);
                 editTextDescription.setText(description);
                 checkBoxSadness.setChecked(sadness);
                 checkBoxAnxiety.setChecked(anxiety);
@@ -149,6 +150,20 @@ public class MoodLogActivity extends AppCompatActivity {
             Toast.makeText(this,
                     "O spinner Categoria não possui valores!",
                     Toast.LENGTH_LONG).show();
+        }
+
+        if( modo == EDIT_MODO                                          &&
+            description.equalsIgnoreCase(moodOriginl.getDescription()) &&
+            sadness == moodOriginl.isSadness()                         &&
+            anxiety == moodOriginl.isAnxiety()                         &&
+            happiness == moodOriginl.isHappiness()                     &&
+            anger == moodOriginl.isAnger()                             &&
+            intensityEmotion == moodOriginl.getIntensityEmotion()      &&
+            categoryDay == moodOriginl.getCategoryDay())
+        {
+            setResult(MoodLogActivity.RESULT_CANCELED);
+            finish();
+            return;
         }
 
         Intent intentResponse = new Intent();

@@ -1,9 +1,12 @@
 package br.edu.utfpr.alunos.jeffersonlima.monisaudemental;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -16,6 +19,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.ActionMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +29,52 @@ public class MoodRecordsActivity extends AppCompatActivity {
     private ListView listViewMoodRecords;
     private List<MoodLog> listMoods;
     private MoodsAdapter moodsAdapter;
+    private ActionMode actionMode;
+    private View viewSelected;
+    private Drawable backgroundDrawable;
+    private ActionMode.Callback actionCallback = new ActionMode.Callback() {
+        @Override
+        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+            MenuInflater inflate = mode.getMenuInflater();
+            inflate.inflate(R.menu.mood_recordes_selected, menu);
+            return true;
+        }
 
+        @Override
+        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+            return false;
+        }
+
+        @Override
+        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+            int idMenuItem = item.getItemId();
+            if(idMenuItem == R.id.menu_item_edit){
+                editMoods();
+                return true;
+            }else{
+                if(idMenuItem == R.id.menu_item_delete){
+                    deleteMoods();
+                    mode.finish();
+                    return true;
+                }
+                else{
+                    return false;
+                }
+            }
+        }
+
+        @Override
+        public void onDestroyActionMode(ActionMode mode) {
+            if(viewSelected != null){
+                viewSelected.setBackground(backgroundDrawable);
+            }
+            actionMode = null;
+            viewSelected = null;
+            backgroundDrawable = null;
+
+            listViewMoodRecords.setEnabled(true);
+        }
+    };
     private int positionSelected = -1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,9 +95,29 @@ public class MoodRecordsActivity extends AppCompatActivity {
                         Toast.LENGTH_LONG).show();
             }
         });
+
+        listViewMoodRecords.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long l) {
+
+                if(actionMode != null){
+                    return false;
+                }
+                positionSelected = position;
+                viewSelected = view;
+                backgroundDrawable = view.getBackground();
+                view.setBackgroundColor(Color.LTGRAY);
+
+                listViewMoodRecords.setEnabled(false);
+                actionMode = startSupportActionMode(actionCallback);
+
+                return true;
+           }
+        });
+
         addMoodLog();
 
-        registerForContextMenu(listViewMoodRecords);
+//        registerForContextMenu(listViewMoodRecords);
     }
 
 
@@ -175,10 +244,13 @@ public class MoodRecordsActivity extends AppCompatActivity {
                         }
                     }
                     positionSelected = -1;
+
+                    if(actionMode != null){
+                        actionMode.finish();
+                    }
                 }
             });
-    private void editMoods(int position){
-        positionSelected = position;
+    private void editMoods(){
 
         MoodLog moodLog = listMoods.get(positionSelected);
         Intent intentOpening = new Intent(this, MoodLogActivity.class);
@@ -195,37 +267,37 @@ public class MoodRecordsActivity extends AppCompatActivity {
 
         launcherEditMood.launch(intentOpening);
     }
-    private void deleteMoods(int position){
-        listMoods.remove(position);
+    private void deleteMoods(){
+        listMoods.remove(positionSelected);
         moodsAdapter.notifyDataSetChanged();
     }
 
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-        super.onCreateContextMenu(menu, v, menuInfo);
-
-        getMenuInflater().inflate(R.menu.mood_recordes_selected, menu);
-    }
-
-    @Override
-    public boolean onContextItemSelected(@NonNull MenuItem item) {
-
-        AdapterView.AdapterContextMenuInfo info;
-        info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-
-
-        int idMenuItem = item.getItemId();
-        if(idMenuItem == R.id.menu_item_edit){
-            editMoods(info.position);
-            return true;
-        }else{
-            if(idMenuItem == R.id.menu_item_delete){
-                deleteMoods(info.position);
-                return true;
-            }
-            else{
-                return super.onContextItemSelected(item);
-            }
-        }
-    }
+//    @Override
+//    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+//        super.onCreateContextMenu(menu, v, menuInfo);
+//
+//        getMenuInflater().inflate(R.menu.mood_recordes_selected, menu);
+//    }
+//
+//    @Override
+//    public boolean onContextItemSelected(@NonNull MenuItem item) {
+//
+//        AdapterView.AdapterContextMenuInfo info;
+//        info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+//
+//
+//        int idMenuItem = item.getItemId();
+//        if(idMenuItem == R.id.menu_item_edit){
+//            editMoods(info.position);
+//            return true;
+//        }else{
+//            if(idMenuItem == R.id.menu_item_delete){
+//                deleteMoods(info.position);
+//                return true;
+//            }
+//            else{
+//                return super.onContextItemSelected(item);
+//            }
+//        }
+//    }
 }
