@@ -1,7 +1,15 @@
 package br.edu.utfpr.alunos.jeffersonlima.monisaudemental;
 
+import java.util.Comparator;
+
 public class MoodLog {
 
+    public  static Comparator<MoodLog> ascendingOrder = new Comparator<MoodLog>() {
+        @Override
+        public int compare(MoodLog moodLog1, MoodLog moodLog2) {
+            return moodLog1.getDescription().compareToIgnoreCase(moodLog2.getDescription());
+        }
+    };
     private String description;
     private boolean sadness;
     private boolean anxiety;

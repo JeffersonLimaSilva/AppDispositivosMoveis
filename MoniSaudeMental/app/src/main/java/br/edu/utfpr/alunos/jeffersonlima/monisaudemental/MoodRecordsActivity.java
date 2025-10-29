@@ -22,6 +22,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.ActionMode;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class MoodRecordsActivity extends AppCompatActivity {
@@ -173,6 +174,7 @@ public class MoodRecordsActivity extends AppCompatActivity {
 
                             MoodLog moodLog = new MoodLog(description,sadness, anxiety, happiness,anger, emotion, IntensityEmotion.valueOf(intensity), categoryDay);
                             listMoods.add(moodLog);
+                            Collections.sort(listMoods, MoodLog.ascendingOrder);
                             moodsAdapter.notifyDataSetChanged();
                         }
                     }
@@ -239,6 +241,8 @@ public class MoodRecordsActivity extends AppCompatActivity {
 
                             IntensityEmotion intensityEmotion = IntensityEmotion.valueOf(intensity);
                             moodLog.setIntensityEmotion(intensityEmotion);
+
+                            Collections.sort(listMoods, MoodLog.ascendingOrder);
 
                             moodsAdapter.notifyDataSetChanged();
                         }
