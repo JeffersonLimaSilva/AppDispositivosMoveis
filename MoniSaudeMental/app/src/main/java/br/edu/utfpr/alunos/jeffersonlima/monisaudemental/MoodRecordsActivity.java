@@ -33,6 +33,7 @@ public class MoodRecordsActivity extends AppCompatActivity {
     private ActionMode actionMode;
     private View viewSelected;
     private Drawable backgroundDrawable;
+    public static final String FILE_PREFERENCES = "br.edu.utfpr.alunos.jeffersonlima.monisaudemental.PREFERENCES";
     private ActionMode.Callback actionCallback = new ActionMode.Callback() {
         @Override
         public boolean onCreateActionMode(ActionMode mode, Menu menu) {

@@ -1,6 +1,8 @@
 package br.edu.utfpr.alunos.jeffersonlima.monisaudemental;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -26,6 +28,9 @@ public class MoodLogActivity extends AppCompatActivity {
     public static final String KEY_INTENSITY = "KEY_INTENSITY";
     public static final String KEY_CATEGORY = "KEY_CATEGORY";
     public static final String KEY_MODO = "MODO";
+    public static final String KEY_SUGGEST = "SUGGEST";
+    public static final String KEY_LAST_CATEGORY = "LAST_CATEGORY";
+
 
     public static final int NEW_MODO = 0;
     public static final int EDIT_MODO = 1;
@@ -37,6 +42,8 @@ public class MoodLogActivity extends AppCompatActivity {
 
     private int modo;
     private MoodLog moodOriginl;
+    private boolean suggest = false;
+    private int lastCategory = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +61,8 @@ public class MoodLogActivity extends AppCompatActivity {
         radioButtonModerada        = findViewById(R.id.radioButtonModerate);
         radioButtonIntensa         = findViewById(R.id.radioButtonIntense);
 
+        readPreferences();
+        
         Intent intentOpening = getIntent();
 
         Bundle bundle = intentOpening.getExtras();
@@ -61,6 +70,10 @@ public class MoodLogActivity extends AppCompatActivity {
             modo = bundle.getInt(KEY_MODO);
             if (modo == NEW_MODO){
                 setTitle(getString(R.string.register_mood));
+
+                if(suggest){
+                    spinnerCategoryDay.setSelection(lastCategory);
+                }
             }else{
                 setTitle(getString(R.string.edit_mood));
 
@@ -166,6 +179,8 @@ public class MoodLogActivity extends AppCompatActivity {
             return;
         }
 
+        saveLastCategory(categoryDay);
+
         Intent intentResponse = new Intent();
         intentResponse.putExtra(KEY_DESCRIPTION, description);
         intentResponse.putExtra(KEY_SADNESS, sadness);
@@ -185,6 +200,13 @@ public class MoodLogActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuItem item = menu.findItem(R.id.menu_item_suggestion);
+        item.setChecked(suggest);
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int idMenuItem = item.getItemId();
         if(idMenuItem == R.id.menu_item_save){
@@ -197,8 +219,46 @@ public class MoodLogActivity extends AppCompatActivity {
                 return true;
             }
             else{
-                return super.onOptionsItemSelected(item);
+                if(idMenuItem == R.id.menu_item_suggestion){
+                    boolean valor = !item.isChecked();
+                    saveSuggest(valor);
+                    item.setChecked(valor);
+
+                    if(suggest){
+                        spinnerCategoryDay.setSelection(lastCategory);
+                    }
+                    return true;
+                }else {
+                    return super.onOptionsItemSelected(item);
+                }
             }
         }
+    }
+
+    private void readPreferences(){
+
+        SharedPreferences shared = getSharedPreferences(MoodRecordsActivity.FILE_PREFERENCES, Context.MODE_PRIVATE);
+        suggest = shared.getBoolean(KEY_SUGGEST, suggest);
+        lastCategory = shared.getInt(KEY_LAST_CATEGORY, lastCategory);
+    }
+
+    private void saveSuggest( boolean newValor){
+        SharedPreferences shared = getSharedPreferences(MoodRecordsActivity.FILE_PREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences.Editor edit = shared.edit();
+        edit.putBoolean(KEY_SUGGEST, newValor);
+
+        edit.commit();
+        suggest = newValor;
+    }
+
+    private void saveLastCategory(int newValor){
+        SharedPreferences shared = getSharedPreferences(MoodRecordsActivity.FILE_PREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences.Editor edit = shared.edit();
+        edit.putInt(KEY_LAST_CATEGORY, newValor);
+
+        edit.commit();
+
+        lastCategory = newValor;
+
     }
 }
