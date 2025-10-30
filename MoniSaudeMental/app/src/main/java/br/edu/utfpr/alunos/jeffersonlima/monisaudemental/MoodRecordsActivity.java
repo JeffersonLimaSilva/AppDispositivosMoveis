@@ -88,7 +88,7 @@ public class MoodRecordsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mood_records);
-        setTitle("Controle Geral");
+        setTitle(getString(R.string.controle_geral));
         listViewMoodRecords = findViewById(R.id.listViewMoodRecords);
         listViewMoodRecords.setOnItemClickListener(new AdapterView.OnItemClickListener(){
 
