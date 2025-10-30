@@ -1,6 +1,8 @@
 package br.edu.utfpr.alunos.jeffersonlima.monisaudemental;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -34,6 +36,9 @@ public class MoodRecordsActivity extends AppCompatActivity {
     private View viewSelected;
     private Drawable backgroundDrawable;
     public static final String FILE_PREFERENCES = "br.edu.utfpr.alunos.jeffersonlima.monisaudemental.PREFERENCES";
+    public static final String KEY_ASCENDING_ORDER = "ASCENDING_ORDER";
+    private boolean ascendingOrder = true;
+
     private ActionMode.Callback actionCallback = new ActionMode.Callback() {
         @Override
         public boolean onCreateActionMode(ActionMode mode, Menu menu) {
@@ -116,6 +121,7 @@ public class MoodRecordsActivity extends AppCompatActivity {
                 return true;
            }
         });
+        readPreferences();
 
         addMoodLog();
 
@@ -175,8 +181,8 @@ public class MoodRecordsActivity extends AppCompatActivity {
 
                             MoodLog moodLog = new MoodLog(description,sadness, anxiety, happiness,anger, emotion, IntensityEmotion.valueOf(intensity), categoryDay);
                             listMoods.add(moodLog);
-                            Collections.sort(listMoods, MoodLog.ascendingOrder);
-                            moodsAdapter.notifyDataSetChanged();
+
+                            listOrder();
                         }
                     }
                 }
@@ -205,7 +211,13 @@ public class MoodRecordsActivity extends AppCompatActivity {
                 openAbout();
                 return true;
             } else {
-                return super.onOptionsItemSelected(item);
+                if(idMenuItem == R.id.menu_item_order){
+                    saveAscendingOrder(!ascendingOrder);
+                    listOrder();
+                    return true;
+                }else{
+                    return super.onOptionsItemSelected(item);
+                }
             }
         }
     }
@@ -243,9 +255,7 @@ public class MoodRecordsActivity extends AppCompatActivity {
                             IntensityEmotion intensityEmotion = IntensityEmotion.valueOf(intensity);
                             moodLog.setIntensityEmotion(intensityEmotion);
 
-                            Collections.sort(listMoods, MoodLog.ascendingOrder);
-
-                            moodsAdapter.notifyDataSetChanged();
+                            listOrder();
                         }
                     }
                     positionSelected = -1;
@@ -276,33 +286,27 @@ public class MoodRecordsActivity extends AppCompatActivity {
         listMoods.remove(positionSelected);
         moodsAdapter.notifyDataSetChanged();
     }
+    private void listOrder(){
+        if(ascendingOrder){
+            Collections.sort(listMoods, MoodLog.ascendingOrder);
+        }else{
+            Collections.sort(listMoods, MoodLog.descendingOrder);
+        }
+        moodsAdapter.notifyDataSetChanged();
+    }
+    private void readPreferences(){
 
-//    @Override
-//    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-//        super.onCreateContextMenu(menu, v, menuInfo);
-//
-//        getMenuInflater().inflate(R.menu.mood_recordes_selected, menu);
-//    }
-//
-//    @Override
-//    public boolean onContextItemSelected(@NonNull MenuItem item) {
-//
-//        AdapterView.AdapterContextMenuInfo info;
-//        info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-//
-//
-//        int idMenuItem = item.getItemId();
-//        if(idMenuItem == R.id.menu_item_edit){
-//            editMoods(info.position);
-//            return true;
-//        }else{
-//            if(idMenuItem == R.id.menu_item_delete){
-//                deleteMoods(info.position);
-//                return true;
-//            }
-//            else{
-//                return super.onContextItemSelected(item);
-//            }
-//        }
-//    }
+        SharedPreferences shared = getSharedPreferences(MoodRecordsActivity.FILE_PREFERENCES, Context.MODE_PRIVATE);
+        ascendingOrder = shared.getBoolean(KEY_ASCENDING_ORDER, ascendingOrder);
+    }
+    private void saveAscendingOrder(boolean newValor){
+        SharedPreferences shared = getSharedPreferences(FILE_PREFERENCES, Context.MODE_PRIVATE);
+
+        SharedPreferences.Editor edit = shared.edit();
+        edit.putBoolean(KEY_ASCENDING_ORDER, newValor);
+
+        edit.commit();
+
+        ascendingOrder = newValor;
+    }
 }

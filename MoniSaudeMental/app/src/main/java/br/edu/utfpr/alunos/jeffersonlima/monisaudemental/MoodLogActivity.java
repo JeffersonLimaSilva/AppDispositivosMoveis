@@ -261,4 +261,6 @@ public class MoodLogActivity extends AppCompatActivity {
         lastCategory = newValor;
 
     }
+
+
 }

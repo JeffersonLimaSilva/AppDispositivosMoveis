@@ -9,6 +9,11 @@
             android:title="@string/register_buttom"
             app:showAsAction="ifRoom" />
         <item
+            android:id="@+id/menu_item_order"
+            android:icon="@drawable/ic_action_ascending"
+            android:title="@string/order"
+            app:showAsAction="ifRoom" />
+        <item
             android:id="@+id/menu_item_about"
             android:checkable="false"
             android:title="@string/about" />

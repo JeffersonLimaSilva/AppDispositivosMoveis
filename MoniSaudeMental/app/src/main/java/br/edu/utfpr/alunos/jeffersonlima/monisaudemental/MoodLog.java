@@ -10,6 +10,12 @@ public class MoodLog {
             return moodLog1.getDescription().compareToIgnoreCase(moodLog2.getDescription());
         }
     };
+    public  static Comparator<MoodLog> descendingOrder = new Comparator<MoodLog>() {
+        @Override
+        public int compare(MoodLog moodLog1, MoodLog moodLog2) {
+            return -1 * moodLog1.getDescription().compareToIgnoreCase(moodLog2.getDescription());
+        }
+    };
     private String description;
     private boolean sadness;
     private boolean anxiety;
