@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -37,7 +36,9 @@ public class MoodRecordsActivity extends AppCompatActivity {
     private Drawable backgroundDrawable;
     public static final String FILE_PREFERENCES = "br.edu.utfpr.alunos.jeffersonlima.monisaudemental.PREFERENCES";
     public static final String KEY_ASCENDING_ORDER = "ASCENDING_ORDER";
-    private boolean ascendingOrder = true;
+    public static final boolean PATTERN_INITIAL_ORDER = true;
+    private boolean ascendingOrder = PATTERN_INITIAL_ORDER;
+    private MenuItem menuItemOrder;
 
     private ActionMode.Callback actionCallback = new ActionMode.Callback() {
         @Override
@@ -195,6 +196,13 @@ public class MoodRecordsActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.mood_recordes_options, menu);
+        menuItemOrder = menu.findItem(R.id.menu_item_order);
+        return true;
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        toUpdateIconOrder();
         return true;
     }
 
@@ -213,10 +221,21 @@ public class MoodRecordsActivity extends AppCompatActivity {
             } else {
                 if(idMenuItem == R.id.menu_item_order){
                     saveAscendingOrder(!ascendingOrder);
+                    toUpdateIconOrder();
                     listOrder();
                     return true;
                 }else{
-                    return super.onOptionsItemSelected(item);
+                    if(idMenuItem == R.id.menu_item_restore){
+                        restorePatterns();
+                        toUpdateIconOrder();
+
+                        listOrder();
+
+                        Toast.makeText(this, R.string.factory_patterns, Toast.LENGTH_LONG).show();
+                        return true;
+                    }else{
+                        return super.onOptionsItemSelected(item);
+                    }
                 }
             }
         }
@@ -294,6 +313,14 @@ public class MoodRecordsActivity extends AppCompatActivity {
         }
         moodsAdapter.notifyDataSetChanged();
     }
+
+    private void toUpdateIconOrder(){
+        if(ascendingOrder){
+            menuItemOrder.setIcon(R.drawable.ic_action_ascending);
+        }else{
+            menuItemOrder.setIcon(R.drawable.ic_action_descending);
+        }
+    }
     private void readPreferences(){
 
         SharedPreferences shared = getSharedPreferences(MoodRecordsActivity.FILE_PREFERENCES, Context.MODE_PRIVATE);
@@ -308,5 +335,16 @@ public class MoodRecordsActivity extends AppCompatActivity {
         edit.commit();
 
         ascendingOrder = newValor;
+    }
+
+    private void restorePatterns(){
+        SharedPreferences shared = getSharedPreferences(FILE_PREFERENCES, Context.MODE_PRIVATE);
+
+        SharedPreferences.Editor edit = shared.edit();
+
+        edit.clear();
+        edit.commit();
+
+        ascendingOrder = PATTERN_INITIAL_ORDER;
     }
 }

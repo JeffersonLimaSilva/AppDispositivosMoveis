@@ -99,4 +99,6 @@
     <string name="edit_mood">Editar Humor</string>
     <string name="suggestion">Sugestões</string>
     <string name="order">Odenação</string>
+    <string name="restore">Restaurar Padrões</string>
+    <string name="factory_patterns">As configurações voltaram para os padrões de fábrica.</string>
 </resources>

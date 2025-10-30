@@ -4,6 +4,10 @@
 
     <group android:checkableBehavior="all">
         <item
+            android:id="@+id/menu_item_restore"
+            android:checkable="false"
+            android:title="@string/restore" />
+        <item
             android:id="@+id/menu_item_add"
             android:icon="@drawable/plus"
             android:title="@string/register_buttom"
