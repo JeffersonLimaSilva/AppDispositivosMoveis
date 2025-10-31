@@ -31,4 +31,28 @@ public final class UtilsAlert {
 
         alert.show();
     }
+
+    public static void actionConfirm(Context context, int idMessage,
+                                     DialogInterface.OnClickListener listernerYes,
+                                     DialogInterface.OnClickListener listernerNo){
+        actionConfirm(context, idMessage, listernerYes, listernerNo);
+    }
+
+    public static void actionConfirm(Context context, String message,
+                                     DialogInterface.OnClickListener listernerYes,
+                                     DialogInterface.OnClickListener listernerNo){
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle(R.string.confirmation);
+        builder.setIcon(android.R.drawable.ic_dialog_alert);
+        builder.setMessage(message);
+
+        builder.setPositiveButton(R.string.yes, listernerYes);
+        builder.setNegativeButton(R.string.no, listernerNo);
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+
+    }
+
+
 }

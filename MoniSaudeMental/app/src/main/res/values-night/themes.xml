@@ -5,6 +5,6 @@
          <item name="colorPrimary">@color/purple_ligth</item>
          <item name="colorPrimaryVariant">@color/purple</item>
          <item name="colorOnPrimary">@color/white</item>
-
     </style>
+    <color name="colorSelected">@color/gray_transparent</color>
 </resources>

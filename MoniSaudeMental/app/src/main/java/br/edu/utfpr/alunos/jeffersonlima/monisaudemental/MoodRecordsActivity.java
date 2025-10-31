@@ -1,6 +1,7 @@
 package br.edu.utfpr.alunos.jeffersonlima.monisaudemental;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -19,12 +20,15 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.ActionMode;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import br.edu.utfpr.alunos.jeffersonlima.monisaudemental.utils.UtilsAlert;
 
 public class MoodRecordsActivity extends AppCompatActivity {
 
@@ -62,7 +66,7 @@ public class MoodRecordsActivity extends AppCompatActivity {
             }else{
                 if(idMenuItem == R.id.menu_item_delete){
                     deleteMoods();
-                    mode.finish();
+
                     return true;
                 }
                 else{
@@ -114,7 +118,7 @@ public class MoodRecordsActivity extends AppCompatActivity {
                 positionSelected = position;
                 viewSelected = view;
                 backgroundDrawable = view.getBackground();
-                view.setBackgroundColor(Color.LTGRAY);
+                view.setBackgroundColor(getColor(R.color.colorSelected));
 
                 listViewMoodRecords.setEnabled(false);
                 actionMode = startSupportActionMode(actionCallback);
@@ -226,12 +230,7 @@ public class MoodRecordsActivity extends AppCompatActivity {
                     return true;
                 }else{
                     if(idMenuItem == R.id.menu_item_restore){
-                        restorePatterns();
-                        toUpdateIconOrder();
-
-                        listOrder();
-
-                        Toast.makeText(this, R.string.factory_patterns, Toast.LENGTH_LONG).show();
+                        confirmRestorePatterns();
                         return true;
                     }else{
                         return super.onOptionsItemSelected(item);
@@ -302,8 +301,21 @@ public class MoodRecordsActivity extends AppCompatActivity {
         launcherEditMood.launch(intentOpening);
     }
     private void deleteMoods(){
-        listMoods.remove(positionSelected);
-        moodsAdapter.notifyDataSetChanged();
+
+        MoodLog moodLog = listMoods.get(positionSelected);
+//        String message = getString(R.string.want_delete, moodLog.getDescription());
+        String message = getString(R.string.want_delete, moodLog.getDescription());
+
+        DialogInterface.OnClickListener listenerYes = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                listMoods.remove(positionSelected);
+                moodsAdapter.notifyDataSetChanged();
+                actionMode.finish();
+            }
+        };
+
+        UtilsAlert.actionConfirm(this, message, listenerYes, null);
     }
     private void listOrder(){
         if(ascendingOrder){
@@ -335,6 +347,21 @@ public class MoodRecordsActivity extends AppCompatActivity {
         edit.commit();
 
         ascendingOrder = newValor;
+    }
+    private void  confirmRestorePatterns(){
+        DialogInterface.OnClickListener listenerYes = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                restorePatterns();
+                toUpdateIconOrder();
+
+                listOrder();
+
+                Toast.makeText(MoodRecordsActivity.this, R.string.factory_patterns, Toast.LENGTH_LONG).show();
+
+            }
+        };
+        UtilsAlert.actionConfirm(this, getString(R.string.want_restore_defaults), listenerYes, null);
     }
 
     private void restorePatterns(){

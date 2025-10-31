@@ -6,4 +6,7 @@
     <color name="purple_ligth">#884FF6</color>
     <color name="purple_black">#4F2CA9</color>
     <color name="gray">#D7D7D7</color>
+    <color name="gray_transparent">#C8808080</color>
+    <color name="purple_transparent">#CD8862ED</color>
+
 </resources>
