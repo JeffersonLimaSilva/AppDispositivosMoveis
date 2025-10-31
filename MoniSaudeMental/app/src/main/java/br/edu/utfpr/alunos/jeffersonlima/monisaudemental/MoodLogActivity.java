@@ -18,6 +18,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import br.edu.utfpr.alunos.jeffersonlima.monisaudemental.utils.UtilsAlert;
+
 public class MoodLogActivity extends AppCompatActivity {
 
     public static final String KEY_DESCRIPTION = "KEY_DESCRIPTION";
@@ -119,16 +121,12 @@ public class MoodLogActivity extends AppCompatActivity {
         spinnerCategoryDay.setSelection(0);
 
         editTextDescription.requestFocus();
-        Toast.makeText(this,
-                R.string.clear_all,
-                Toast.LENGTH_LONG).show();
+        UtilsAlert.showAlert(this, R.string.clear_all);
     }
     public void saveValues(){
         String description = editTextDescription.getText().toString();
         if(description == null || description.trim().isEmpty()){
-            Toast.makeText(this,
-                    R.string.description_null,
-                    Toast.LENGTH_LONG).show();
+            UtilsAlert.showAlert(this, R.string.description_null);
             editTextDescription.requestFocus();
             return;
         }
@@ -137,7 +135,7 @@ public class MoodLogActivity extends AppCompatActivity {
         boolean happiness = checkBoxHappiness.isChecked();
         boolean anger = checkBoxAnger.isChecked();
         if(!sadness && !anxiety && !happiness && !anger){
-            Toast.makeText(this, R.string.select_emotion, Toast.LENGTH_SHORT).show();
+            UtilsAlert.showAlert(this, R.string.select_emotion);
             return;
         }
 
@@ -152,7 +150,7 @@ public class MoodLogActivity extends AppCompatActivity {
                 if(radioButtonId == R.id.radioButtonIntense){
                     intensityEmotion = IntensityEmotion.Intensa;
                 }else{
-                    Toast.makeText(this, R.string.select_intent, Toast.LENGTH_SHORT).show();
+                    UtilsAlert.showAlert(this, R.string.select_intent);
                     return;
                 }
             }
@@ -160,9 +158,7 @@ public class MoodLogActivity extends AppCompatActivity {
 
         int categoryDay = spinnerCategoryDay.getSelectedItemPosition();
         if(categoryDay == AdapterView.INVALID_POSITION){
-            Toast.makeText(this,
-                    "O spinner Categoria não possui valores!",
-                    Toast.LENGTH_LONG).show();
+            UtilsAlert.showAlert(this, R.string.not_spinner_value);
         }
 
         if( modo == EDIT_MODO                                          &&

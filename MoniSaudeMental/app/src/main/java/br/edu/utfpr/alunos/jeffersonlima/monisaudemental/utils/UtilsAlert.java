@@ -11,7 +11,10 @@ public final class UtilsAlert {
     private UtilsAlert(){
 
     }
+    public static void showAlert(Context context, int  idMessage) {
 
+        showAlert(context, context.getString(idMessage), null);
+    }
     public static void showAlert(Context context, int  idMessage, DialogInterface.OnClickListener listener) {
 
         showAlert(context, context.getString(idMessage), listener);
