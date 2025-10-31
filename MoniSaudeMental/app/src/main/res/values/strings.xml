@@ -102,4 +102,6 @@
     <string name="restore">Restore Defaults</string>
     <string name="factory_patterns">Settings have been restored to factory defaults.</string>
     <string name="controle_geral">General Control</string>
+    <string name="warning">Warning</string>
+    <string name="ok">OK</string>
 </resources>
