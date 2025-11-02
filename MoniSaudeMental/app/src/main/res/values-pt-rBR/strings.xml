@@ -76,4 +76,7 @@
     <string name="want_restore_defaults">Deseja restaurar as configurações padrão?</string>
     <string name="undo">Desfazer</string>
     <string name="change_made">Alteração realizada.</string>
+    <string name="error_to_insert">Erro ao tentar inserir!</string>
+    <string name="error_to_update">Erro ao tentar atualizar!</string>
+    <string name="error_to_delete">Erro ao tentar excluir!</string>
 </resources>

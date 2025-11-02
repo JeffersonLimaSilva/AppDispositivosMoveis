@@ -9,6 +9,8 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import br.edu.utfpr.alunos.jeffersonlima.monisaudemental.modelo.MoodLog;
+
 public class MoodsAdapter extends BaseAdapter {
     private Context context;
     private List<MoodLog> listMoods;

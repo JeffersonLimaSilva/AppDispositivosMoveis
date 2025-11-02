@@ -14,24 +14,20 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.ScrollView;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.snackbar.Snackbar;
 
+import br.edu.utfpr.alunos.jeffersonlima.monisaudemental.modelo.IntensityEmotion;
+import br.edu.utfpr.alunos.jeffersonlima.monisaudemental.modelo.MoodLog;
+import br.edu.utfpr.alunos.jeffersonlima.monisaudemental.persistence.MoodLogDatabase;
 import br.edu.utfpr.alunos.jeffersonlima.monisaudemental.utils.UtilsAlert;
 
 public class MoodLogActivity extends AppCompatActivity {
 
-    public static final String KEY_DESCRIPTION = "KEY_DESCRIPTION";
-    public static final String KEY_SADNESS = "KEY_SADNESS";
-    public static final String KEY_ANXIETY = "KEY_ANXIETY";
-    public static final String KEY_HAPPINESS = "KEY_HAPPINESS";
-    public static final String KEY_ANGER = "KEY_ANGER";
-    public static final String KEY_INTENSITY = "KEY_INTENSITY";
-    public static final String KEY_CATEGORY = "KEY_CATEGORY";
+    public static final String KEY_ID = "ID";
     public static final String KEY_MODO = "MODO";
     public static final String KEY_SUGGEST = "SUGGEST";
     public static final String KEY_LAST_CATEGORY = "LAST_CATEGORY";
@@ -82,23 +78,22 @@ public class MoodLogActivity extends AppCompatActivity {
             }else{
                 setTitle(getString(R.string.edit_mood));
 
-                String description = bundle.getString(MoodLogActivity.KEY_DESCRIPTION);
-                boolean sadness    = bundle.getBoolean(MoodLogActivity.KEY_SADNESS);
-                boolean anxiety    = bundle.getBoolean(MoodLogActivity.KEY_ANXIETY);
-                boolean happiness  = bundle.getBoolean(MoodLogActivity.KEY_HAPPINESS);
-                boolean anger      = bundle.getBoolean(MoodLogActivity.KEY_ANGER);
-                String intensity   = bundle.getString(MoodLogActivity.KEY_INTENSITY);
-                int categoryDay    = bundle.getInt(MoodLogActivity.KEY_CATEGORY);
+                long id = bundle.getLong(KEY_ID);
 
-                IntensityEmotion intensityEmotion = IntensityEmotion.valueOf(intensity);
+                MoodLogDatabase database = MoodLogDatabase.getInstance(this);
+                moodOriginl = database.getMoodLogDao().queryForId(id);
 
-                moodOriginl = new MoodLog(description, sadness, anxiety, happiness, anger, "",intensityEmotion, categoryDay);
-                editTextDescription.setText(description);
-                checkBoxSadness.setChecked(sadness);
-                checkBoxAnxiety.setChecked(anxiety);
-                checkBoxHappiness.setChecked(happiness);
-                checkBoxAnger.setChecked(anger);
-                spinnerCategoryDay.setSelection(categoryDay);
+
+
+
+                editTextDescription.setText(moodOriginl.getDescription());
+                checkBoxSadness.setChecked(moodOriginl.isSadness());
+                checkBoxAnxiety.setChecked(moodOriginl.isAnxiety());
+                checkBoxHappiness.setChecked(moodOriginl.isHappiness());
+                checkBoxAnger.setChecked(moodOriginl.isAnger());
+                spinnerCategoryDay.setSelection(moodOriginl.getCategoryDay());
+
+                IntensityEmotion intensityEmotion = moodOriginl.getIntensityEmotion();
 
                 if(intensityEmotion == IntensityEmotion.Leve){
                     radioButtonLeve.setChecked(true);
@@ -111,6 +106,8 @@ public class MoodLogActivity extends AppCompatActivity {
                         }
                     }
                 }
+                editTextDescription.requestFocus();
+                editTextDescription.setSelection(editTextDescription.getText().length());
             }
         }
     }
@@ -185,6 +182,12 @@ public class MoodLogActivity extends AppCompatActivity {
             return;
         }
 
+        String emotion = "";
+        emotion = sadness ? emotion + getString(R.string.sadness ): emotion;
+        emotion = anxiety ? emotion + getString(R.string.anxiety) : emotion;
+        emotion = happiness ? emotion + getString(R.string.happiness): emotion;
+        emotion = anger ? emotion + getString(R.string.anger): emotion;
+
         int radioButtonId = radioGroupIntensityEmotion.getCheckedRadioButtonId();
         IntensityEmotion intensityEmotion;
         if(radioButtonId == R.id.radioButtonLight){
@@ -207,30 +210,40 @@ public class MoodLogActivity extends AppCompatActivity {
             UtilsAlert.showAlert(this, R.string.not_spinner_value);
         }
 
-        if( modo == EDIT_MODO                                          &&
-            description.equalsIgnoreCase(moodOriginl.getDescription()) &&
-            sadness == moodOriginl.isSadness()                         &&
-            anxiety == moodOriginl.isAnxiety()                         &&
-            happiness == moodOriginl.isHappiness()                     &&
-            anger == moodOriginl.isAnger()                             &&
-            intensityEmotion == moodOriginl.getIntensityEmotion()      &&
-            categoryDay == moodOriginl.getCategoryDay())
-        {
+
+        MoodLog moodLog = new MoodLog(description, sadness, anxiety, happiness, anger, emotion, intensityEmotion, categoryDay);
+
+        if(moodLog.equals(moodOriginl)){
             setResult(MoodLogActivity.RESULT_CANCELED);
             finish();
             return;
         }
 
+        Intent intentResponse = new Intent();
+        MoodLogDatabase database = MoodLogDatabase.getInstance(this);
+        if(modo == NEW_MODO){
+
+            long newId = database.getMoodLogDao().insert(moodLog);
+            if(newId <= 0){
+                UtilsAlert.showAlert(this, R.string.error_to_insert);
+                return;
+            }
+            moodLog.setId(newId);
+
+        }else{
+
+            moodLog.setId(moodOriginl.getId());
+            int amountUpdate = database.getMoodLogDao().update(moodLog);
+
+            if(amountUpdate != 1){
+                UtilsAlert.showAlert(this, R.string.error_to_update);
+                return;
+            }
+        }
+
         saveLastCategory(categoryDay);
 
-        Intent intentResponse = new Intent();
-        intentResponse.putExtra(KEY_DESCRIPTION, description);
-        intentResponse.putExtra(KEY_SADNESS, sadness);
-        intentResponse.putExtra(KEY_ANXIETY, anxiety);
-        intentResponse.putExtra(KEY_HAPPINESS, happiness);
-        intentResponse.putExtra(KEY_ANGER, anger);
-        intentResponse.putExtra(KEY_INTENSITY, intensityEmotion.toString());
-        intentResponse.putExtra(KEY_CATEGORY, categoryDay);
+        intentResponse.putExtra(KEY_ID, moodLog.getId());
         setResult(MoodLogActivity.RESULT_OK, intentResponse);
         finish();
     }

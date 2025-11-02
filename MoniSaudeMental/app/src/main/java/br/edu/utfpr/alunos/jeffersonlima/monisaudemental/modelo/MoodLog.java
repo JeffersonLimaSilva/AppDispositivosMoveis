@@ -1,9 +1,14 @@
-package br.edu.utfpr.alunos.jeffersonlima.monisaudemental;
+package br.edu.utfpr.alunos.jeffersonlima.monisaudemental.modelo;
 
 import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
 import java.util.Comparator;
+import java.util.Objects;
 
+@Entity
 public class MoodLog implements Cloneable{
 
     public  static Comparator<MoodLog> ascendingOrder = new Comparator<MoodLog>() {
@@ -18,6 +23,11 @@ public class MoodLog implements Cloneable{
             return -1 * moodLog1.getDescription().compareToIgnoreCase(moodLog2.getDescription());
         }
     };
+
+    @PrimaryKey(autoGenerate = true)
+    private long id;
+    @NonNull
+    @ColumnInfo(index = true)
     private String description;
     private boolean sadness;
     private boolean anxiety;
@@ -25,7 +35,7 @@ public class MoodLog implements Cloneable{
     private boolean anger;
     private String emotion;
     private IntensityEmotion intensityEmotion;
-    private int CategoryDay;
+    private int categoryDay;
 
     public MoodLog(String description, boolean sadness, boolean anxiety, boolean happiness, boolean anger, String emotion, IntensityEmotion intensityEmotion, int categoryDay) {
         this.description = description;
@@ -35,7 +45,15 @@ public class MoodLog implements Cloneable{
         this.anger = anger;
         this.emotion = emotion;
         this.intensityEmotion = intensityEmotion;
-        CategoryDay = categoryDay;
+        this.categoryDay = categoryDay;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getDescription() {
@@ -94,18 +112,37 @@ public class MoodLog implements Cloneable{
     }
 
     public int getCategoryDay() {
-        return CategoryDay;
+        return categoryDay;
     }
 
     public void setCategoryDay(int categoryDay) {
-        CategoryDay = categoryDay;
+        this.categoryDay = categoryDay;
     }
 
     @NonNull
     @Override
-    protected Object clone() throws CloneNotSupportedException {
+    public Object clone() throws CloneNotSupportedException {
 
         return super.clone();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        MoodLog moodLog = (MoodLog) o;
+        return  sadness == moodLog.sadness &&
+                anxiety == moodLog.anxiety &&
+                happiness == moodLog.happiness &&
+                anger == moodLog.anger &&
+                categoryDay == moodLog.categoryDay &&
+                description.equals(moodLog.description) &&
+                emotion.equals(moodLog.emotion) &&
+                intensityEmotion == moodLog.intensityEmotion;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(description, sadness, anxiety, happiness, anger, emotion, intensityEmotion, categoryDay);
     }
 
     @Override
@@ -113,7 +150,7 @@ public class MoodLog implements Cloneable{
         return  description       + "\n" +
                 emotion          + "\n" +
                 intensityEmotion + "\n" +
-                CategoryDay ;
+                categoryDay;
     }
 
 

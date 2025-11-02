@@ -1,4 +1,4 @@
-package br.edu.utfpr.alunos.jeffersonlima.monisaudemental;
+package br.edu.utfpr.alunos.jeffersonlima.monisaudemental.modelo;
 
 public enum IntensityEmotion {
     Leve,
