@@ -5,6 +5,7 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.Objects;
 
@@ -36,6 +37,7 @@ public class MoodLog implements Cloneable{
     private String emotion;
     private IntensityEmotion intensityEmotion;
     private int categoryDay;
+    private LocalDate dateRegister;
 
     public MoodLog(String description, boolean sadness, boolean anxiety, boolean happiness, boolean anger, String emotion, IntensityEmotion intensityEmotion, int categoryDay) {
         this.description = description;
@@ -119,6 +121,14 @@ public class MoodLog implements Cloneable{
         this.categoryDay = categoryDay;
     }
 
+    public LocalDate getDateRegister() {
+        return dateRegister;
+    }
+
+    public void setDateRegister(LocalDate dateRegister) {
+        this.dateRegister = dateRegister;
+    }
+
     @NonNull
     @Override
     public Object clone() throws CloneNotSupportedException {
@@ -130,6 +140,13 @@ public class MoodLog implements Cloneable{
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         MoodLog moodLog = (MoodLog) o;
+
+        if(dateRegister == null && moodLog.dateRegister != null){
+            return false;
+        }
+        if(dateRegister != null && dateRegister.equals(moodLog.dateRegister) == false) {
+            return false;
+        }
         return  sadness == moodLog.sadness &&
                 anxiety == moodLog.anxiety &&
                 happiness == moodLog.happiness &&
@@ -142,7 +159,7 @@ public class MoodLog implements Cloneable{
 
     @Override
     public int hashCode() {
-        return Objects.hash(description, sadness, anxiety, happiness, anger, emotion, intensityEmotion, categoryDay);
+        return Objects.hash(description, sadness, anxiety, happiness, anger, emotion, intensityEmotion, categoryDay, dateRegister);
     }
 
     @Override
@@ -150,7 +167,8 @@ public class MoodLog implements Cloneable{
         return  description       + "\n" +
                 emotion          + "\n" +
                 intensityEmotion + "\n" +
-                categoryDay;
+                categoryDay+ "\n" +
+                dateRegister;
     }
 
 

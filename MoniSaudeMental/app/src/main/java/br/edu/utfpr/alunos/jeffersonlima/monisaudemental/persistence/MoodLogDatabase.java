@@ -5,10 +5,12 @@ import android.content.Context;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
+import androidx.room.TypeConverters;
 
 import br.edu.utfpr.alunos.jeffersonlima.monisaudemental.modelo.MoodLog;
 
-@Database(entities = {MoodLog.class}, version = 1, exportSchema = true)
+@Database(entities = {MoodLog.class}, version = 3)
+@TypeConverters({ConvertIntensityEmotion.class, ConvertLocalDate.class})
 public abstract class MoodLogDatabase extends RoomDatabase {
 
     public abstract MoodLogDao getMoodLogDao();
@@ -22,9 +24,16 @@ public abstract class MoodLogDatabase extends RoomDatabase {
             synchronized (MoodLogDatabase.class){
                 if(INSTANCE == null){
 
-                    INSTANCE = Room.databaseBuilder(context,
+                    Builder builder = Room.databaseBuilder(context,
                                                     MoodLogDatabase.class,
-                                                    "moodlog.db").allowMainThreadQueries().build();
+                                                    "moodlog.db");
+                    builder.allowMainThreadQueries();
+
+                    builder.addMigrations(new Migrated_1_2());
+                    builder.addMigrations(new Migrated_2_3());
+
+
+                    INSTANCE = (MoodLogDatabase) builder.build();
                 }
             }
         }

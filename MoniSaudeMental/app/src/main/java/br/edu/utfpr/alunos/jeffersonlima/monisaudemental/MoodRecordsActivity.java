@@ -176,6 +176,7 @@ public class MoodRecordsActivity extends AppCompatActivity {
             });
     public void openMoodLog(){
         Intent intentOpening = new Intent(this, MoodLogActivity.class);
+        intentOpening.putExtra(MoodLogActivity.KEY_MODO, MoodLogActivity.NEW_MODO);
         launcherRegisterMood.launch(intentOpening);
     }
 

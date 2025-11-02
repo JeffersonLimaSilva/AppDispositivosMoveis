@@ -22,13 +22,13 @@ public interface MoodLogDao {
     @Update
     int update(MoodLog moodLog);
 
-    @Query("SELECT * FROM moodlog WHERE id=:id")
+    @Query("SELECT * FROM MoodLog WHERE id=:id")
     MoodLog queryForId(long id);
 
-    @Query("SELECT * FROM moodlog ORDER BY description ASC")
+    @Query("SELECT * FROM MoodLog ORDER BY description ASC")
     List<MoodLog> queryAllAscending();
 
-    @Query("SELECT * FROM moodlog ORDER BY description DESC")
+    @Query("SELECT * FROM MoodLog ORDER BY description DESC")
     List<MoodLog> queryAllDownward();
 }
 
