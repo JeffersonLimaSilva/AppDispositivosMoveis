@@ -73,4 +73,7 @@
     <string name="no">No</string>
     <string name="want_delete">Do you want do delete?\n\"%1$s\"</string>
     <string name="want_restore_defaults">Do you want do restore defaults?</string>
+    <string name="undo">Undo</string>
+    <string name="change_made">Change made.</string>
+    <string name="consersion_error">Type consersion error.</string>
 </resources>

@@ -1,8 +1,10 @@
 package br.edu.utfpr.alunos.jeffersonlima.monisaudemental;
 
+import androidx.annotation.NonNull;
+
 import java.util.Comparator;
 
-public class MoodLog {
+public class MoodLog implements Cloneable{
 
     public  static Comparator<MoodLog> ascendingOrder = new Comparator<MoodLog>() {
         @Override
@@ -97,6 +99,13 @@ public class MoodLog {
 
     public void setCategoryDay(int categoryDay) {
         CategoryDay = categoryDay;
+    }
+
+    @NonNull
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+
+        return super.clone();
     }
 
     @Override

@@ -74,4 +74,6 @@
     <string name="no">Não</string>
     <string name="want_delete">Deseja deletar?\n\"%1$s\"</string>
     <string name="want_restore_defaults">Deseja restaurar as configurações padrão?</string>
+    <string name="undo">Desfazer</string>
+    <string name="change_made">Alteração realizada.</string>
 </resources>

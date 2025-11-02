@@ -12,11 +12,14 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.material.snackbar.Snackbar;
 
 import br.edu.utfpr.alunos.jeffersonlima.monisaudemental.utils.UtilsAlert;
 
@@ -112,6 +115,18 @@ public class MoodLogActivity extends AppCompatActivity {
         }
     }
     public void clearInput(){
+
+        final String description = editTextDescription.getText().toString();
+        final boolean sadness    = checkBoxSadness.isChecked();
+        final boolean anxiety    = checkBoxAnxiety.isChecked();
+        final boolean happiness  = checkBoxHappiness.isChecked();
+        final boolean anger      = checkBoxAnger.isChecked();
+        final int intensity      = radioGroupIntensityEmotion.getCheckedRadioButtonId();
+        final int category       = spinnerCategoryDay.getSelectedItemPosition();
+
+        final ScrollView scrollView = findViewById(R.id.main);
+        final View viewFocus =  scrollView.findFocus();
+
         editTextDescription.setText(null);
         checkBoxSadness.setChecked(false);
         checkBoxAnxiety.setChecked(false);
@@ -119,9 +134,40 @@ public class MoodLogActivity extends AppCompatActivity {
         checkBoxAnger.setChecked(false);
         radioGroupIntensityEmotion.clearCheck();
         spinnerCategoryDay.setSelection(0);
-
         editTextDescription.requestFocus();
-        UtilsAlert.showAlert(this, R.string.clear_all);
+
+        Snackbar snackbar = Snackbar.make(scrollView, R.string.clear_all, Snackbar.LENGTH_LONG);
+
+        snackbar.setAction(R.string.undo, new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                editTextDescription.setText(description);
+                checkBoxSadness.setChecked(sadness);
+                checkBoxAnxiety.setChecked(anxiety);
+                checkBoxHappiness.setChecked(happiness);
+                checkBoxAnger.setChecked(anger);
+
+                if(intensity == R.id.radioButtonLight){
+                    radioButtonLeve.setChecked(true);
+                }else{
+                    if(intensity == R.id.radioButtonModerate){
+                        radioButtonModerada.setChecked(true);
+                    }else{
+                        if(intensity == R.id.radioButtonIntense){
+                            radioButtonIntensa.setChecked(true);
+                        }
+                    }
+                }
+                spinnerCategoryDay.setSelection(category);
+
+                if(viewFocus != null){
+                    viewFocus.requestFocus();
+                }
+            }
+        });
+
+        snackbar.show();
     }
     public void saveValues(){
         String description = editTextDescription.getText().toString();

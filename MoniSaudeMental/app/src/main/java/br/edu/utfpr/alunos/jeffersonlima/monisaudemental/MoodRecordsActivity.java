@@ -23,6 +23,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.ActionMode;
+import androidx.constraintlayout.widget.ConstraintLayout;
+
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -261,7 +264,16 @@ public class MoodRecordsActivity extends AppCompatActivity {
                             emotion = happiness ? emotion + getString(R.string.happiness): emotion;
                             emotion = anger ? emotion + getString(R.string.anger): emotion;
 
-                            MoodLog moodLog = listMoods.get(positionSelected);
+                            final MoodLog moodLog = listMoods.get(positionSelected);
+                            final MoodLog moodOriginal;
+
+                            try {
+                                moodOriginal = (MoodLog) moodLog.clone();
+                            } catch (CloneNotSupportedException e) {
+                                e.printStackTrace();
+                                UtilsAlert.showAlert(MoodRecordsActivity.this, R.string.consersion_error);
+                                return;
+                            }
 
                             moodLog.setDescription(description);
                             moodLog.setSadness(sadness);
@@ -274,6 +286,19 @@ public class MoodRecordsActivity extends AppCompatActivity {
                             moodLog.setIntensityEmotion(intensityEmotion);
 
                             listOrder();
+
+                            final ConstraintLayout constraintLayout = findViewById(R.id.main);
+                            Snackbar snackbar = Snackbar.make(constraintLayout, R.string.change_made, Snackbar.LENGTH_LONG);
+                            snackbar.setAction(R.string.undo, new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    listMoods.remove(moodLog);
+                                    listMoods.add(moodOriginal);
+
+                                    listOrder();
+                                }
+                            });
+                            snackbar.show();
                         }
                     }
                     positionSelected = -1;
