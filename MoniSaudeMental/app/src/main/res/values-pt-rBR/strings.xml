@@ -79,4 +79,7 @@
     <string name="error_to_insert">Erro ao tentar inserir!</string>
     <string name="error_to_update">Erro ao tentar atualizar!</string>
     <string name="error_to_delete">Erro ao tentar excluir!</string>
+    <string name="date_event">Data do Evento</string>
+    <string name="event_date_cannot_be_empty">A data do evento não pode ficar vazia!</string>
+    <string name="event_cannot_more_1_year">A data do evento não pode ter mais de 1 ano!</string>
 </resources>

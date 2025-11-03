@@ -37,9 +37,9 @@ public class MoodLog implements Cloneable{
     private String emotion;
     private IntensityEmotion intensityEmotion;
     private int categoryDay;
-    private LocalDate dateRegister;
+    private LocalDate dateEvent;
 
-    public MoodLog(String description, boolean sadness, boolean anxiety, boolean happiness, boolean anger, String emotion, IntensityEmotion intensityEmotion, int categoryDay) {
+    public MoodLog(String description, boolean sadness, boolean anxiety, boolean happiness, boolean anger, String emotion, IntensityEmotion intensityEmotion, int categoryDay, LocalDate dateEvent) {
         this.description = description;
         this.sadness = sadness;
         this.anxiety = anxiety;
@@ -48,6 +48,7 @@ public class MoodLog implements Cloneable{
         this.emotion = emotion;
         this.intensityEmotion = intensityEmotion;
         this.categoryDay = categoryDay;
+        this.dateEvent = dateEvent;
     }
 
     public long getId() {
@@ -121,12 +122,12 @@ public class MoodLog implements Cloneable{
         this.categoryDay = categoryDay;
     }
 
-    public LocalDate getDateRegister() {
-        return dateRegister;
+    public LocalDate getDateEvent() {
+        return dateEvent;
     }
 
-    public void setDateRegister(LocalDate dateRegister) {
-        this.dateRegister = dateRegister;
+    public void setDateEvent(LocalDate dateEvent) {
+        this.dateEvent = dateEvent;
     }
 
     @NonNull
@@ -141,10 +142,10 @@ public class MoodLog implements Cloneable{
         if (o == null || getClass() != o.getClass()) return false;
         MoodLog moodLog = (MoodLog) o;
 
-        if(dateRegister == null && moodLog.dateRegister != null){
+        if(dateEvent == null && moodLog.dateEvent != null){
             return false;
         }
-        if(dateRegister != null && dateRegister.equals(moodLog.dateRegister) == false) {
+        if(dateEvent != null && dateEvent.equals(moodLog.dateEvent) == false) {
             return false;
         }
         return  sadness == moodLog.sadness &&
@@ -159,7 +160,7 @@ public class MoodLog implements Cloneable{
 
     @Override
     public int hashCode() {
-        return Objects.hash(description, sadness, anxiety, happiness, anger, emotion, intensityEmotion, categoryDay, dateRegister);
+        return Objects.hash(description, sadness, anxiety, happiness, anger, emotion, intensityEmotion, categoryDay, dateEvent);
     }
 
     @Override
@@ -168,7 +169,7 @@ public class MoodLog implements Cloneable{
                 emotion          + "\n" +
                 intensityEmotion + "\n" +
                 categoryDay+ "\n" +
-                dateRegister;
+                dateEvent;
     }
 
 

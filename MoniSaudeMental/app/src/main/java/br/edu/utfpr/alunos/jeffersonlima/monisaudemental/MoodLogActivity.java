@@ -1,5 +1,6 @@
 package br.edu.utfpr.alunos.jeffersonlima.monisaudemental;
 
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -9,21 +10,26 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.ScrollView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.snackbar.Snackbar;
 
+import java.time.LocalDate;
+
 import br.edu.utfpr.alunos.jeffersonlima.monisaudemental.modelo.IntensityEmotion;
 import br.edu.utfpr.alunos.jeffersonlima.monisaudemental.modelo.MoodLog;
 import br.edu.utfpr.alunos.jeffersonlima.monisaudemental.persistence.MoodLogDatabase;
 import br.edu.utfpr.alunos.jeffersonlima.monisaudemental.utils.UtilsAlert;
+import br.edu.utfpr.alunos.jeffersonlima.monisaudemental.utils.UtilsLocalDate;
 
 public class MoodLogActivity extends AppCompatActivity {
 
@@ -35,7 +41,7 @@ public class MoodLogActivity extends AppCompatActivity {
 
     public static final int NEW_MODO = 0;
     public static final int EDIT_MODO = 1;
-    private EditText editTextDescription;
+    private EditText editTextDescription, editTextDateEvent;
     private CheckBox checkBoxSadness, checkBoxAnxiety, checkBoxHappiness, checkBoxAnger;
     private RadioGroup radioGroupIntensityEmotion;
     private RadioButton radioButtonLeve, radioButtonModerada, radioButtonIntensa;
@@ -46,12 +52,15 @@ public class MoodLogActivity extends AppCompatActivity {
     private boolean suggest = false;
     private int lastCategory = 0;
 
+    private LocalDate dateEvent;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mood_log);
 
         editTextDescription        = findViewById(R.id.editTextDescription);
+        editTextDateEvent          = findViewById(R.id.editTextDateEvent);
         checkBoxSadness            = findViewById(R.id.checkBoxSadness);
         checkBoxAnxiety            = findViewById(R.id.checkBoxAnxiety);
         checkBoxHappiness          = findViewById(R.id.checkBoxHappiness);
@@ -61,6 +70,14 @@ public class MoodLogActivity extends AppCompatActivity {
         radioButtonLeve            = findViewById(R.id.radioButtonLight);
         radioButtonModerada        = findViewById(R.id.radioButtonModerate);
         radioButtonIntensa         = findViewById(R.id.radioButtonIntense);
+
+        editTextDateEvent.setFocusable(false);
+        editTextDateEvent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showDatePickerDialog();
+            }
+        });
 
         readPreferences();
         
@@ -75,6 +92,8 @@ public class MoodLogActivity extends AppCompatActivity {
                 if(suggest){
                     spinnerCategoryDay.setSelection(lastCategory);
                 }
+
+                dateEvent = LocalDate.now();
             }else{
                 setTitle(getString(R.string.edit_mood));
 
@@ -87,6 +106,12 @@ public class MoodLogActivity extends AppCompatActivity {
 
 
                 editTextDescription.setText(moodOriginl.getDescription());
+                dateEvent = moodOriginl.getDateEvent();
+
+                editTextDateEvent.setText(UtilsLocalDate.formatLocalDate(dateEvent));
+
+
+
                 checkBoxSadness.setChecked(moodOriginl.isSadness());
                 checkBoxAnxiety.setChecked(moodOriginl.isAnxiety());
                 checkBoxHappiness.setChecked(moodOriginl.isHappiness());
@@ -111,9 +136,32 @@ public class MoodLogActivity extends AppCompatActivity {
             }
         }
     }
+
+    private void showDatePickerDialog(){
+
+        DatePickerDialog.OnDateSetListener listener = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                dateEvent = LocalDate.of(year, month + 1, dayOfMonth);
+
+                editTextDateEvent.setText(UtilsLocalDate.formatLocalDate(dateEvent));
+            }
+        };
+
+        if(dateEvent == null){
+            dateEvent = LocalDate.now();
+        }
+        DatePickerDialog picker = new DatePickerDialog(this, listener, dateEvent.getYear(), dateEvent.getMonthValue() - 1, dateEvent.getDayOfMonth());
+
+        long dataMaxMilliseconds = UtilsLocalDate.toMilliseconds(LocalDate.now());
+        picker.getDatePicker().setMaxDate(dataMaxMilliseconds);
+        picker.show();
+    }
     public void clearInput(){
 
         final String description = editTextDescription.getText().toString();
+
+        final LocalDate dateEventPrevious = dateEvent;
         final boolean sadness    = checkBoxSadness.isChecked();
         final boolean anxiety    = checkBoxAnxiety.isChecked();
         final boolean happiness  = checkBoxHappiness.isChecked();
@@ -125,6 +173,10 @@ public class MoodLogActivity extends AppCompatActivity {
         final View viewFocus =  scrollView.findFocus();
 
         editTextDescription.setText(null);
+
+        editTextDateEvent.setText(null);
+        dateEvent = LocalDate.now();
+
         checkBoxSadness.setChecked(false);
         checkBoxAnxiety.setChecked(false);
         checkBoxHappiness.setChecked(false);
@@ -140,6 +192,8 @@ public class MoodLogActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 editTextDescription.setText(description);
+                dateEvent = dateEventPrevious;
+                editTextDateEvent.setText(UtilsLocalDate.formatLocalDate(dateEvent));
                 checkBoxSadness.setChecked(sadness);
                 checkBoxAnxiety.setChecked(anxiety);
                 checkBoxHappiness.setChecked(happiness);
@@ -173,6 +227,18 @@ public class MoodLogActivity extends AppCompatActivity {
             editTextDescription.requestFocus();
             return;
         }
+        String dateEventString = editTextDateEvent.getText().toString();
+        if(dateEventString == null || dateEventString.trim().isEmpty()){
+            UtilsAlert.showAlert(this, R.string.event_date_cannot_be_empty);
+            return;
+        }
+        int months = UtilsLocalDate.differenceMonthsForToday(dateEvent);
+
+        if (months < 0 || months > 12) {
+            UtilsAlert.showAlert(this, R.string.event_cannot_more_1_year);
+            return;
+        }
+
         boolean sadness = checkBoxSadness.isChecked();
         boolean anxiety = checkBoxAnxiety.isChecked();
         boolean happiness = checkBoxHappiness.isChecked();
@@ -211,7 +277,7 @@ public class MoodLogActivity extends AppCompatActivity {
         }
 
 
-        MoodLog moodLog = new MoodLog(description, sadness, anxiety, happiness, anger, emotion, intensityEmotion, categoryDay);
+        MoodLog moodLog = new MoodLog(description, sadness, anxiety, happiness, anger, emotion, intensityEmotion, categoryDay, dateEvent);
 
         if(moodLog.equals(moodOriginl)){
             setResult(MoodLogActivity.RESULT_CANCELED);

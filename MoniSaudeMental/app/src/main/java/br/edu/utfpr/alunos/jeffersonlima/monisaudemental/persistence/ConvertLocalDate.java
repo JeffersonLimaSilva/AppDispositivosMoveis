@@ -6,6 +6,7 @@ import androidx.room.TypeConverter;
 
 
 import java.time.LocalDate;
+import java.time.ZoneId;
 
 public class ConvertLocalDate {
 
@@ -25,4 +26,5 @@ public class ConvertLocalDate {
 
         return LocalDate.ofEpochDay(epochDay);
     }
+
 }

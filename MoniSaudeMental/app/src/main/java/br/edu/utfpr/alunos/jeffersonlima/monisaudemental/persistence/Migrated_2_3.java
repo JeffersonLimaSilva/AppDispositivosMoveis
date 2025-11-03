@@ -13,6 +13,6 @@ public class Migrated_2_3 extends Migration {
     @Override
     public void migrate(@NonNull SupportSQLiteDatabase database) {
 
-        database.execSQL("ALTER TABLE MoodLog ADD COLUMN dateRegister INTEGER");
+        database.execSQL("ALTER TABLE MoodLog ADD COLUMN dateEvent INTEGER");
     }
 }

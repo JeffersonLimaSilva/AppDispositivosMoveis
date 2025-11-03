@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 3,
-    "identityHash": "4985cad341b3b1cea9b906ed6aeb44d7",
+    "identityHash": "7907c61d676cf6e3720ff7fbfd6e45e7",
     "entities": [
       {
         "tableName": "MoodLog",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `description` TEXT NOT NULL, `sadness` INTEGER NOT NULL, `anxiety` INTEGER NOT NULL, `happiness` INTEGER NOT NULL, `anger` INTEGER NOT NULL, `emotion` TEXT, `intensityEmotion` INTEGER, `categoryDay` INTEGER NOT NULL, `dateRegister` INTEGER)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `description` TEXT NOT NULL, `sadness` INTEGER NOT NULL, `anxiety` INTEGER NOT NULL, `happiness` INTEGER NOT NULL, `anger` INTEGER NOT NULL, `emotion` TEXT, `intensityEmotion` INTEGER, `categoryDay` INTEGER NOT NULL, `dateEvent` INTEGER)",
         "fields": [
           {
             "fieldPath": "id",
@@ -63,8 +63,8 @@
             "notNull": true
           },
           {
-            "fieldPath": "dateRegister",
-            "columnName": "dateRegister",
+            "fieldPath": "dateEvent",
+            "columnName": "dateEvent",
             "affinity": "INTEGER",
             "notNull": false
           }
@@ -92,7 +92,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '4985cad341b3b1cea9b906ed6aeb44d7')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '7907c61d676cf6e3720ff7fbfd6e45e7')"
     ]
   }
 }
